@@ -13,24 +13,14 @@
   //   ],
   "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
   "rules": {
-    "indent": [
-        "error",
-        "tab"
-    ],
-    "linebreak-style": [
-        "error",
-        "unix"
-    ],
-    "quotes": [
-        "error",
-        "single"
-    ],
-    "semi": [
-        "error",
-        "always"
-    ]
-},
-"parserOptions": {
-    "ecmaVersion": 2015
-}
+    "no-console": 0,
+
+    "no-var": "error",
+    "semi": "error",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "no-multi-spaces": "error",
+    "space-in-parens": "error",
+    "no-multiple-empty-lines": "error"
+    // "prefer-const": "error"
+  }
 }

@@ -5,7 +5,6 @@ import { User } from './Types/type';
 
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
-import { log } from 'console';
 
 // const axios = require('axios');
 
@@ -20,6 +19,7 @@ const user: User = {
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+console.log(process.env.PORT);
 
 async function scrapeTitles() {
   try {

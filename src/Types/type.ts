@@ -1,14 +1,10 @@
-type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-};
 type Article = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  username: string;
+  id: string;
+  title: string;
+  link: string;
+  image: string;
+  origin:string;
+  date: Date;
 };
 
-export { User,Article };
+export { Article };

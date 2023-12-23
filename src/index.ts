@@ -1,7 +1,7 @@
 // src/index.js
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import {GetOneArticles} from './dataCollectors/one'
+import {getOneArticles,getWallaArticles} from './dataCollectors/one'
 // const axios = require('axios');
 
 dotenv.config();
@@ -13,10 +13,14 @@ const port = process.env.PORT || 3000;
 
 app.get('/', async (req: Request, res: Response) => {
   try {
-    const oneArticles = await GetOneArticles()
+    // const oneArticles = await getOneArticles()
+    const wallaArticles = await getWallaArticles()
 
-    
-    res.json(oneArticles)
+    wallaArticles.forEach(img=>{
+      console.log(img.image.length);
+      
+    })
+    res.json(wallaArticles)
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error:', error.message);

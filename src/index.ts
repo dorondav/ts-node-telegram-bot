@@ -12,13 +12,13 @@ const port = process.env.PORT || 3000;
 
 app.get('/', async (req: Request, res: Response) => {
   try {
-    const wallaArticles = await getWallaArticles();
-    const oneArticles = await getOneArticles();
+    const wallaArticles = await getWallaArticles(5);
+    const oneArticles = await getOneArticles(5);
 
-    wallaArticles.forEach((img) => {
-      console.log(img.image);
+    oneArticles.forEach((img) => {
+      console.log('main',img.image);
     });
-    res.json(oneArticles);
+    res.json(wallaArticles);
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error:', error.message);

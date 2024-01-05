@@ -1,8 +1,7 @@
 // src/index.js
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { getOneArticles, getWallaArticles } from './services/articles';
-import {logger} from './lib/logger'
+import {logger} from './lib/logger';
 // const axios = require('axios');
 
 dotenv.config();
@@ -12,13 +11,8 @@ const port = process.env.PORT || 3000;
 
 app.get('/', async (req: Request, res: Response) => {
   try {
-    const wallaArticles = await getWallaArticles(5);
-    const oneArticles = await getOneArticles(5);
-
-    oneArticles.forEach((img) => {
-      console.log('main',img.image);
-    });
-    res.json(wallaArticles);
+   
+    res.json("hi");
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error:', error.message);

@@ -6,12 +6,12 @@
 },
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  //   "extends": [
-  //     "eslint:recommended",
-  //     "plugin:@typescript-eslint/eslint-recommended",
-  //     "plugin:@typescript-eslint/recommended"
-  //   ],
-  "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+  // "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
   "rules": {
     "no-console": 0,
 

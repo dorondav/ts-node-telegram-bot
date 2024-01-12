@@ -1,11 +1,16 @@
 type Article = {
   id: string;
   title: string;
-  link: string;
-  image?: string;
-  main: boolean;
-  origin: string;
+  url: string;
   date: Date;
 };
 
-export { Article };
+type WallaArticles = Article & {
+  smallTitle: string;
+};
+type WallaPageData = {
+  title: string[];
+  smallTitle: string[];
+  url: string[];
+};
+export { Article, WallaArticles, WallaPageData };

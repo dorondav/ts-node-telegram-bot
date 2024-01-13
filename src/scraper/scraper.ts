@@ -8,12 +8,6 @@ export async function scrapeData() {
     headless: 'new',
   });
   const page = await browser.newPage();
-
-  /*
-TODO: add this to a type 
-*/
-
-
   try {
     await page.goto('https://www.walla.co.il/', { waitUntil: 'networkidle0' });
     // Scrape data from h3 elements with class 'data-tb-title'

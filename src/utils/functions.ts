@@ -6,7 +6,6 @@ const combineObjectArrays = (obj: WallaPageData) => {
   const articles = [];
   const array = Object.values(obj);
   for (let index = 0; index < array.length; index++) {
-    // articles.push(array.map((item) => item[index]));
     const articleItems = array.map((item) => item[index]);
     const articleObj:WallaArticles = {
       title: articleItems[0],

@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { logger } from '../lib/logger';
 import { combineObjectArrays } from '../utils/functions';
-import {WallaPageData} from '../Types/type';
+import { WallaPageData } from '../Types/type';
 export async function scrapeData() {
   // Launch the browser
   const browser = await puppeteer.launch({
@@ -10,9 +10,18 @@ export async function scrapeData() {
   const page = await browser.newPage();
   try {
     await page.goto('https://www.walla.co.il/', { waitUntil: 'networkidle0' });
-    // Scrape data from h3 elements with class 'data-tb-title'
 
-    const data = await page.evaluate(():WallaPageData => {
+    //Get secondary articles from walla
+    const mainData = await page.evaluate((): WallaPageData => {
+      const title = [document.querySelector('.drama-wide-wrapper .main-item h2')?.textContent || ''];
+      const smallTitle = [document.querySelector('.drama-wide-wrapper .main-item .roof')?.textContent || ''];
+      const url = [document.querySelector('.drama-wide-wrapper .main-item a')?.getAttribute('href') || ''];
+      const body = [document.querySelector('.drama-wide-wrapper .main-item p')?.textContent || ''];
+
+      return { title, smallTitle, url, body };
+    });
+    //Get secondary articles from walla
+    const data = await page.evaluate((): WallaPageData => {
       const getTextFromElements = (selector: string) => {
         const elements = Array.from(document.querySelectorAll(selector));
         return elements.map((element) => element.textContent?.trim() || '');
@@ -20,11 +29,10 @@ export async function scrapeData() {
 
       const smallTitle = getTextFromElements('.main-taste li .roof ');
       const title = getTextFromElements('.main-taste li h3');
-
       const getArticleLInk = document.querySelectorAll('.main-taste li a');
-      const url = [...getArticleLInk].map((e) => e.getAttribute("href"))as string[];
-      
-      return { title, smallTitle ,url};
+      const url = [...getArticleLInk].map((e) => e.getAttribute('href')) as string[];
+
+      return { title, smallTitle, url };
     });
 
     // Close the browser
@@ -32,12 +40,11 @@ export async function scrapeData() {
 
     //Combine data to a single array
 
-
     /* format the data to be better. use the WallaArticles */
     const article = combineObjectArrays(data);
-    console.log(article);
-     
-    return article;
+    
+    const mainStory = combineObjectArrays(mainData);
+    return { article, mainStory };
   } catch (error) {
     logger.error('[scraper]: ', error);
   }

@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from '../lib/logger';
-import { combineObjectArrays } from '../utils/functions';
+import { createArticleArrayFromObject } from '../utils/functions';
 import { WallaPageData } from '../Types/type';
 export async function scrapeData() {
   // Launch the browser
@@ -11,7 +11,7 @@ export async function scrapeData() {
   try {
     await page.goto('https://www.walla.co.il/', { waitUntil: 'networkidle0' });
 
-    //Get secondary articles from walla
+    //Get main story articles from walla
     const mainData = await page.evaluate((): WallaPageData => {
       const title = [document.querySelector('.drama-wide-wrapper .main-item h2')?.textContent || ''];
       const smallTitle = [document.querySelector('.drama-wide-wrapper .main-item .roof')?.textContent || ''];
@@ -20,7 +20,7 @@ export async function scrapeData() {
 
       return { title, smallTitle, url, body };
     });
-    //Get secondary articles from walla
+    //Get list of secondary articles from walla
     const data = await page.evaluate((): WallaPageData => {
       const getTextFromElements = (selector: string) => {
         const elements = Array.from(document.querySelectorAll(selector));
@@ -38,12 +38,10 @@ export async function scrapeData() {
     // Close the browser
     await browser.close();
 
-    //Combine data to a single array
+    // format the article data structure - so each story will be his on array
+    const article = createArticleArrayFromObject(data);
+    const mainStory = createArticleArrayFromObject(mainData);
 
-    /* format the data to be better. use the WallaArticles */
-    const article = combineObjectArrays(data);
-    
-    const mainStory = combineObjectArrays(mainData);
     return { article, mainStory };
   } catch (error) {
     logger.error('[scraper]: ', error);

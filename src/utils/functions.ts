@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { WallaArticles, WallaPageData } from '../Types/type';
-const combineObjectArrays = (obj: WallaPageData) => {
+const createArticleArrayFromObject = (obj: WallaPageData) => {
   const date = new Date();
   const id = uuidv4();
   const articles = [];
@@ -15,7 +15,7 @@ const combineObjectArrays = (obj: WallaPageData) => {
       id: id,
       date: date,
     };
-
+    //Add the article body to the object only if the original object contains him
     if (array.length > 3) {
       articleObj.body = articleItems[3];
     }
@@ -26,4 +26,4 @@ const combineObjectArrays = (obj: WallaPageData) => {
   return articles;
 };
 
-export { combineObjectArrays };
+export { createArticleArrayFromObject };

@@ -3,6 +3,7 @@ type Article = {
   title: string;
   url: string;
   date: Date;
+  source:string;
 };
 
 type WallaArticles = Article & {

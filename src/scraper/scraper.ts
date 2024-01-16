@@ -9,6 +9,8 @@ export async function scrapeData() {
   });
   const page = await browser.newPage();
   try {
+// ToDo break this to functions 
+    
     await page.goto('https://www.walla.co.il/', { waitUntil: 'networkidle0' });
 
     //Get main story articles from walla
@@ -39,8 +41,8 @@ export async function scrapeData() {
     await browser.close();
 
     // format the article data structure - so each story will be his on array
-    const article = createArticleArrayFromObject(data);
-    const mainStory = createArticleArrayFromObject(mainData);
+    const article = createArticleArrayFromObject(data,'Walla');
+    const mainStory = createArticleArrayFromObject(mainData,"Walla");
 
     return { article, mainStory };
   } catch (error) {

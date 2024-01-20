@@ -17,7 +17,6 @@ const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, sour
       date,
       source,
     };
-    // TODO: some articles for walla dong get there smallTitle
     if (source === 'Walla') {
       articleObj = {
         title: articleItems[0],

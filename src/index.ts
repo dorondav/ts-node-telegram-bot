@@ -11,16 +11,14 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
-//TODO: understand how i save the date to a variable
 scrapeWallaNews()
   .then((value) => {
     console.log(value);
   })
   .catch((error) => logger.error('Error:', error));
-
 scrapeYnet()
   .then((value) => {
-    console.log(value);
+ console.log(value);
   })
   .catch((error) => logger.error('Error:', error));
 

@@ -1,21 +1,23 @@
 type Article = {
   id: string;
   title: string;
+  body?: string;
   url: string;
   date: Date;
-  source:string;
+  source: string;
 };
-
-type WallaArticles = Article & {
-  smallTitle: string;
-  body?: string;
-};
-
-type WallaPageData = {
+type ScraperPageData = {
   title: string[];
-  smallTitle: string[];
   url: string[];
   body?: string[];
 };
 
-export { Article, WallaArticles, WallaPageData };
+type WallaArticles = Article & {
+  smallTitle: string;
+};
+
+type WallaPageData = ScraperPageData & {
+  smallTitle: string[];
+};
+
+export { Article, WallaArticles, WallaPageData, ScraperPageData };

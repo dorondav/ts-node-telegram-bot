@@ -2,7 +2,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { logger } from './lib/logger';
-import  scrapeWallaNews  from './scraper/wallaNews';
+import scrapeWallaNews from './scraper/wallaNews';
+import scrapeYnet from './scraper/ynet';
 // const axios = require('axios');
 
 dotenv.config();
@@ -12,6 +13,12 @@ const port = process.env.PORT || 3000;
 
 //TODO: understand how i save the date to a variable
 scrapeWallaNews()
+  .then((value) => {
+    console.log(value);
+  })
+  .catch((error) => logger.error('Error:', error));
+
+scrapeYnet()
   .then((value) => {
     console.log(value);
   })

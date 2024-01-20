@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { WallaArticles, WallaPageData } from '../Types/type';
-const createArticleArrayFromObject = (obj: WallaPageData,source:string) => {
+import { WallaArticles, WallaPageData, Article, ScraperPageData } from '../Types/type';
+const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, source: string) => {
   const date = new Date();
   const id = uuidv4();
   const articles = [];
@@ -8,17 +8,31 @@ const createArticleArrayFromObject = (obj: WallaPageData,source:string) => {
 
   for (let index = 0; index < array[0].length; index++) {
     const articleItems = array.map((item) => item[index]);
-    const articleObj: WallaArticles  = {
+    let articleObj: Article | WallaArticles;
+    articleObj = {
       title: articleItems[0],
-      smallTitle: articleItems[1],
-      url: articleItems[2],
+      url: articleItems[1],
+      body: articleItems[2],
       id,
       date,
-      source
+      source,
     };
-    //Add the article body to the object only if the original object contains him
-    if (array.length > 3 ) {
-      articleObj.body = articleItems[3];
+    // TODO: some articles for walla dong get there smallTitle
+    if (source === 'Walla') {
+      articleObj = {
+        title: articleItems[0],
+        smallTitle: articleItems[1],
+        url: articleItems[2],
+        id,
+        date,
+        source,
+      };
+
+      //Add the article body to the object only if the original object contains him
+      articleObj.body = '';
+      if (array.length > 3) {
+        articleObj.body = articleItems[3];
+      }
     }
 
     articles.push(articleObj);

@@ -27,7 +27,6 @@ export default async function scrapeWallaNews() {
         const elements = Array.from(document.querySelectorAll(selector));
         return elements.map((element) => element.textContent?.trim() || '');
       };
-
       const smallTitle = getTextFromElements('.main-taste li .roof ');
       const title = getTextFromElements('.main-taste li h3');
       const getArticleLInk = document.querySelectorAll('.main-taste li a');
@@ -45,6 +44,6 @@ export default async function scrapeWallaNews() {
 
     return { article, mainStory };
   } catch (error) {
-    logger.error('[scraper]: ', error);
+    logger.error('[scraper: Walla News]: ', error);
   }
 }

@@ -28,6 +28,8 @@ export default async function scrapeYnet() {
         return elements.map((element) => element.textContent?.trim() || '');
       };
 
+      
+
       const title = getTextFromElements('.YnetMultiStripRowsComponenta .slotView h2 span');
       const body = getTextFromElements('.YnetMultiStripRowsComponenta .slotView .slotSubTitle');
       const getArticleLInk = document.querySelectorAll('.YnetMultiStripRowsComponenta .slotView a');
@@ -42,7 +44,6 @@ export default async function scrapeYnet() {
     // format the article data structure - so each story will be his on array
     const article = createArticleArrayFromObject(articleList, 'Ynet');
     const mainArticle = createArticleArrayFromObject(mainStory, 'Ynet');
-
     return { article, mainArticle };
   } catch (error) {
     logger.error('[scraper: Ynet]: ', error);

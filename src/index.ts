@@ -2,33 +2,16 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { logger } from './lib/logger';
-import scrapeWallaNews from './scraper/wallaNews';
-import scrapeYnet from './scraper/ynet';
-import scrapeOne from './scraper/one';
+
+import newsBot from './bot/bot';
 // const axios = require('axios');
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
-scrapeOne()
-  .then((value) => {
-    console.log(value);
-  })
-  .catch((error) => logger.error('Error:', error));
 
-scrapeWallaNews()
-  .then((value) => {
-  //  console.log(value);
-  })
-  .catch((error) => logger.error('Error:', error));
-
-scrapeYnet()
-  .then((value) => {
-   //   console.log(value);
-  })
-  .catch((error) => logger.error('Error:', error));
-
+  newsBot();
 app.get('/', async (req: Request, res: Response) => {
   try {
     res.json('hi');

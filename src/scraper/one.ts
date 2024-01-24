@@ -13,7 +13,6 @@ export default async function scrapeOne() {
     await page.goto('https://www.one.co.il/', { waitUntil: 'networkidle0' });
 
     //Get list of secondary articles from One
-    //Todo: change to promise all
     const mainStory = await page.evaluate((): ScraperPageData => {
       const title = [document.querySelector('#top-article h1 a')?.textContent || ''];
       const urlSlug = document.querySelector('#top-article a.top-article-subtitle')?.getAttribute('href') || '';

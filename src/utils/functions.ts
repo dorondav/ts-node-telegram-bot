@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Context } from 'grammy';
+
 import { WallaArticles, WallaPageData, Article, ScraperPageData } from '../Types/type';
 const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, source: string) => {
   const date = new Date();
@@ -40,9 +42,9 @@ const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, sour
   return articles;
 };
 
-function pushLinksToBot(ctx: any, stories: object[]) {
+function pushLinksToBot(ctx: Context, stories: object[]) {
   stories.forEach((story: object) => {
-    ctx.reply((story as any)['url']);
+    ctx.reply((story as Article)['url']);
   });
 }
 export { createArticleArrayFromObject,pushLinksToBot};

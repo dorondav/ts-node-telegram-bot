@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, Context } from 'grammy';
 import { Menu } from '@grammyjs/menu';
 
 import { logger } from '../lib/logger';
@@ -6,19 +6,19 @@ import { pushLinksToBot } from '../utils/functions';
 import scrapeWallaNews from '../scraper/wallaNews';
 import scrapeYnet from '../scraper/ynet';
 import scrapeOne from '../scraper/one';
-
+import { Article } from '../Types/type';
 export default function newsBot() {
   // Create an instance of the `Bot` class and pass your bot token to it.
   const bot = new Bot(process.env.BOT_TOKEN as string);
   // Create a simple menu.
   const menu = new Menu('my-news-menu')
-    .text('Walla News', (ctx: any) => getWallaNews(ctx))
+    .text('Walla News', (ctx: Context) => getWallaNews(ctx))
     .row()
-    .text('Ynet', (ctx: any) => getYnetNews(ctx))
+    .text('Ynet', (ctx: Context) => getYnetNews(ctx))
     .row()
-    .text('One', (ctx: any) => getOneStories(ctx))
+    .text('One', (ctx: Context) => getOneStories(ctx))
     .row()
-    .text('Read All', (ctx: any) => {
+    .text('Read All', (ctx: Context) => {
       getWallaNews(ctx);
       getYnetNews(ctx);
       getOneStories(ctx);
@@ -51,33 +51,48 @@ export default function newsBot() {
 
   // Start the bot.
   bot.start();
-
 }
-function getOneStories(ctx: any) {
+function getOneStories(ctx: Context) {
   scrapeOne()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
+    .then((items: { data: Article[] } | undefined) => {
+      const stories = items?.data;
+      if (stories !== undefined) {
+        pushLinksToBot(ctx, stories);
+      } else {
+        ctx.reply('issue showing news articles from One. Show /news menu');
+        logger.error('[Bot] Error: issue showing news articles from One. Show /news menu');
+      }
       ctx.reply('Show /news menu');
     })
-    .catch((error: any) => logger.error('Error:', error))
-    .finally(() => {
-      console.log('Experiment completed');
-    });
+    .catch((error) => logger.error('Error:', error));
 }
 
-function getWallaNews(ctx: any) {
+function getWallaNews(ctx: Context) {
   scrapeWallaNews()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
+    .then((items: { data: Article[] } | undefined) => {
+      const stories = items?.data;
+      if (stories !== undefined) {
+        pushLinksToBot(ctx, stories);
+      } else {
+        ctx.reply('issue showing news articles from Walla. Show /news menu');
+        logger.error('[Bot] Error: issue showing news articles from Walla. Show /news menu');
+      }
       ctx.reply('Show /news menu');
     })
-    .catch((error: any) => logger.error('Error:', error));
+    .catch((error) => logger.error('Error:', error));
 }
-function getYnetNews(ctx: any) {
+
+function getYnetNews(ctx: Context) {
   scrapeYnet()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
+    .then((items: { data: Article[] } | undefined) => {
+      const stories = items?.data;
+      if (stories !== undefined) {
+        pushLinksToBot(ctx, stories);
+      } else {
+        ctx.reply('issue showing news articles from Ynet. Show /news menu');
+        logger.error('[Bot] Error: issue showing news articles from Ynet. Show /news menu');
+      }
       ctx.reply('Show /news menu');
     })
-    .catch((error: any) => logger.error('Error:', error));
+    .catch((error) => logger.error('Error:', error));
 }

@@ -2,9 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { logger } from './lib/logger';
-
 import newsBot from './bot/bot';
-// const axios = require('axios');
 
 dotenv.config();
 
@@ -12,7 +10,6 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 //Init Telegram News Bot
 newsBot();
-
 app.get('/', async (req: Request, res: Response) => {
   try {
     res.json('hi');

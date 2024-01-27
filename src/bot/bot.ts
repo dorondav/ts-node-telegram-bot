@@ -26,13 +26,11 @@ export default function newsBot() {
     console.log('getYnetNews', new Date());
     scrapeYnet()
       .then((items: any) => {
-        // console.log( items.data);
-
         items.data.forEach((item: object) => {
-          console.log(item);
+          console.log((item as any)['url']);
+          ctx.reply((item as any)['url']);
         });
       })
-      
       .catch((error: any) => logger.error('Error:', error));
   }
 
@@ -40,11 +38,11 @@ export default function newsBot() {
   bot.command('start', (ctx) => ctx.reply('היי לבוט החדשות שלך. לעזרה כתוב /news'));
   //Show all of the bot commends
   bot.command('news', async (ctx) => {
-    const message = ctx.message;
+    //  const message = ctx.message;
 
     await ctx.reply('Select News Channel ', { reply_markup: menu });
 
-    console.log(message);
+    //  console.log(message);
   });
   // Handle other messages.
 

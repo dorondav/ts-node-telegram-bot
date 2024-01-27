@@ -31,13 +31,15 @@ export default async function scrapeYnet() {
         return elements.map((element) => element.textContent?.trim() || '');
       };
 
-      
-
       const title = getTextFromElements('.YnetMultiStripRowsComponenta .slotView h2 span');
       const body = getTextFromElements('.YnetMultiStripRowsComponenta .slotView .slotSubTitle');
+      // Each a article have 2 links (nodeLists) to the same place
       const getArticleLInk = document.querySelectorAll('.YnetMultiStripRowsComponenta .slotView a');
-      const url = [...getArticleLInk].map((e) => e.getAttribute('href')) as string[];
-      console.log('get article list',new Date());
+      let articleListArray = [...getArticleLInk];
+      let i = articleListArray.length;
+      while (i--) (i + 1) % 2 === 0 && articleListArray.splice(i, 1);
+
+      const url = articleListArray.map((e) => e.getAttribute('href')) as string[];
 
       return { title, url, body };
     });
@@ -49,7 +51,8 @@ export default async function scrapeYnet() {
     const article = createArticleArrayFromObject(articleList, 'Ynet');
     const mainArticle = createArticleArrayFromObject(mainStory, 'Ynet');
 
-    const data = [...mainArticle, ...article]
+    const data = [...mainArticle, ...article];
+    // console.log(data);
 
     return { data };
   } catch (error) {

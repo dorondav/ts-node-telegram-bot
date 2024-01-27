@@ -10,7 +10,7 @@ export default async function scrapeOne() {
   });
   const page = await browser.newPage();
   try {
-    await page.goto('https://www.one.co.il/', { waitUntil: 'networkidle0' });
+    await page.goto('https://www.one.co.il/', { waitUntil: 'domcontentloaded' });
 
     //Get list of secondary articles from One
     const mainStory = await page.evaluate((): ScraperPageData => {

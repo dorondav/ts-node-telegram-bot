@@ -10,7 +10,10 @@ export default async function scrapeYnet() {
   });
   const page = await browser.newPage();
   try {
-    await page.goto('https://www.ynet.co.il/', { waitUntil: 'networkidle0' });
+    console.time('goto');
+
+    await page.goto('https://www.ynet.co.il/', { waitUntil: 'domcontentloaded' });
+    console.timeEnd('goto');
 
     //Get list of secondary articles from Ynet
     const mainStory = await page.evaluate((): ScraperPageData => {
@@ -34,6 +37,7 @@ export default async function scrapeYnet() {
       const body = getTextFromElements('.YnetMultiStripRowsComponenta .slotView .slotSubTitle');
       const getArticleLInk = document.querySelectorAll('.YnetMultiStripRowsComponenta .slotView a');
       const url = [...getArticleLInk].map((e) => e.getAttribute('href')) as string[];
+      console.log('get article list',new Date());
 
       return { title, url, body };
     });
@@ -44,7 +48,10 @@ export default async function scrapeYnet() {
     // format the article data structure - so each story will be his on array
     const article = createArticleArrayFromObject(articleList, 'Ynet');
     const mainArticle = createArticleArrayFromObject(mainStory, 'Ynet');
-    return { article, mainArticle };
+
+    const data = [...mainArticle, ...article]
+
+    return { data };
   } catch (error) {
     logger.error('[scraper: Ynet]: ', error);
   }

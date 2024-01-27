@@ -10,8 +10,9 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+//Init Telegram News Bot
+newsBot();
 
-  newsBot();
 app.get('/', async (req: Request, res: Response) => {
   try {
     res.json('hi');

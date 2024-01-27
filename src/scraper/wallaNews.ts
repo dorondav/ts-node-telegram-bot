@@ -10,7 +10,7 @@ export default async function scrapeWallaNews() {
   });
   const page = await browser.newPage();
   try {
-    await page.goto('https://www.walla.co.il/', { waitUntil: 'networkidle0' });
+    await page.goto('https://www.walla.co.il/', { waitUntil: 'domcontentloaded' });
 
     //Get main story articles from walla
     const mainData = await page.evaluate((): WallaPageData => {

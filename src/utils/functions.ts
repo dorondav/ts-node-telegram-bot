@@ -1,9 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { WallaArticles, WallaPageData, Article, ScraperPageData } from '../Types/type';
-import { logger } from '../lib/logger';
-import scrapeWallaNews from '../scraper/wallaNews';
-import scrapeYnet from '../scraper/ynet';
-import scrapeOne from '../scraper/one';
 const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, source: string) => {
   const date = new Date();
   const id = uuidv4();
@@ -43,31 +39,10 @@ const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, sour
 
   return articles;
 };
-function getOneStories(ctx: any) {
-  scrapeOne()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
-    })
-    .catch((error: any) => logger.error('Error:', error));
-}
 
-function getWallaNews(ctx: any) {
-  scrapeWallaNews()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
-    })
-    .catch((error: any) => logger.error('Error:', error));
-}
-function getYnetNews(ctx: any) {
-  scrapeYnet()
-    .then((items: any) => {
-      pushLinksToBot(ctx, items.data);
-    })
-    .catch((error: any) => logger.error('Error:', error));
-}
 function pushLinksToBot(ctx: any, stories: object[]) {
   stories.forEach((story: object) => {
     ctx.reply((story as any)['url']);
   });
 }
-export { createArticleArrayFromObject,getOneStories ,getYnetNews,getWallaNews};
+export { createArticleArrayFromObject,pushLinksToBot};

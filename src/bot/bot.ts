@@ -1,7 +1,10 @@
 import { Bot } from 'grammy';
 import { Menu } from '@grammyjs/menu';
 import { logger } from '../lib/logger';
-import { getOneStories, getYnetNews, getWallaNews } from '../utils/functions';
+import { pushLinksToBot } from '../utils/functions';
+import scrapeWallaNews from '../scraper/wallaNews';
+import scrapeYnet from '../scraper/ynet';
+import scrapeOne from '../scraper/one';
 
 export default function newsBot() {
   // Create an instance of the `Bot` class and pass your bot token to it.
@@ -18,6 +21,7 @@ export default function newsBot() {
       getWallaNews(ctx);
       getYnetNews(ctx);
       getOneStories(ctx);
+      
     })
     .row();
 
@@ -47,4 +51,26 @@ export default function newsBot() {
 
   // Start the bot.
   bot.start();
+}
+function getOneStories(ctx: any) {
+  scrapeOne()
+    .then((items: any) => {
+      pushLinksToBot(ctx, items.data);
+    }).then(_=> ctx.reply('Show /News menu'))
+    .catch((error: any) => logger.error('Error:', error));
+}
+
+function getWallaNews(ctx: any) {
+  scrapeWallaNews()
+    .then((items: any) => {
+      pushLinksToBot(ctx, items.data);
+    }).then(_=> ctx.reply('Show /News menu'))
+    .catch((error: any) => logger.error('Error:', error));
+}
+function getYnetNews(ctx: any) {
+  scrapeYnet()
+    .then((items: any) => {
+      pushLinksToBot(ctx, items.data);
+    }).then(_=> ctx.reply('Show /News menu'))
+    .catch((error: any) => logger.error('Error:', error));
 }

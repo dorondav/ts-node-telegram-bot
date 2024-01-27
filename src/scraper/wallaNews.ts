@@ -22,7 +22,7 @@ export default async function scrapeWallaNews() {
       return { title, smallTitle, url, body };
     });
     //Get list of secondary articles from walla
-    const data = await page.evaluate((): WallaPageData => {
+    const articles = await page.evaluate((): WallaPageData => {
       const getTextFromElements = (selector: string) => {
         const elements = Array.from(document.querySelectorAll(selector));
         return elements.map((element) => element.textContent?.trim() || '');
@@ -39,10 +39,11 @@ export default async function scrapeWallaNews() {
     await browser.close();
 
     // format the article data structure - so each story will be his on array
-    const article = createArticleArrayFromObject(data, 'Walla');
+    const article = createArticleArrayFromObject(articles, 'Walla');
     const mainStory = createArticleArrayFromObject(mainData, 'Walla');
+    const data = [...mainStory, ...article];
 
-    return { article, mainStory };
+    return { data };
   } catch (error) {
     logger.error('[scraper: Walla News]: ', error);
   }

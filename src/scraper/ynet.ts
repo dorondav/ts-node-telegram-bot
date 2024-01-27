@@ -35,7 +35,7 @@ export default async function scrapeYnet() {
       const body = getTextFromElements('.YnetMultiStripRowsComponenta .slotView .slotSubTitle');
       // Each a article have 2 links (nodeLists) to the same place
       const getArticleLInk = document.querySelectorAll('.YnetMultiStripRowsComponenta .slotView a');
-      let articleListArray = [...getArticleLInk];
+      const articleListArray = [...getArticleLInk];
       let i = articleListArray.length;
       while (i--) (i + 1) % 2 === 0 && articleListArray.splice(i, 1);
 
@@ -50,9 +50,7 @@ export default async function scrapeYnet() {
     // format the article data structure - so each story will be his on array
     const article = createArticleArrayFromObject(articleList, 'Ynet');
     const mainArticle = createArticleArrayFromObject(mainStory, 'Ynet');
-
     const data = [...mainArticle, ...article];
-    // console.log(data);
 
     return { data };
   } catch (error) {

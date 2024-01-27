@@ -45,8 +45,9 @@ export default async function scrapeOne() {
     const article = createArticleArrayFromObject(articleList, 'One');
     const mainArticle = createArticleArrayFromObject(mainStory, 'One');
 
-    return { article, mainArticle };
-  } catch (error) {
+    const data = [...mainArticle, ...article];
+
+    return { data }; } catch (error) {
     logger.error('[scraper: One]: ', error);
   }
 }

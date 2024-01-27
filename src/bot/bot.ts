@@ -1,53 +1,49 @@
 import { Bot } from 'grammy';
 import { Menu } from '@grammyjs/menu';
 import { logger } from '../lib/logger';
-// import scrapeWallaNews from './scraper/wallaNews';
-import scrapeYnet from '../scraper/ynet';
-// import scrapeOne from './scraper/one';
+import { getOneStories, getYnetNews, getWallaNews } from '../utils/functions';
 
 export default function newsBot() {
   // Create an instance of the `Bot` class and pass your bot token to it.
   const bot = new Bot(process.env.BOT_TOKEN as string);
   // Create a simple menu.
-  const menu = new Menu('my-menu-identifier')
-    .text('וואלה חדשות', (ctx: any) => ctx.reply('וואלה חדשות'))
+  const menu = new Menu('my-news-menu')
+    .text('Walla News', (ctx: any) => getWallaNews(ctx))
     .row()
     .text('Ynet', (ctx: any) => getYnetNews(ctx))
     .row()
-    .text('One', (ctx: any) => ctx.reply('One'))
+    .text('One', (ctx: any) => getOneStories(ctx))
     .row()
-    .text('All', (ctx: any) => ctx.reply('all'))
+    .text('Read All', (ctx: any) => {
+      getWallaNews(ctx);
+      getYnetNews(ctx);
+      getOneStories(ctx);
+    })
     .row();
 
   // Init Menu Buttons.
   bot.use(menu);
 
-  function getYnetNews(ctx: any) {
-    console.log('getYnetNews', new Date());
-    scrapeYnet()
-      .then((items: any) => {
-        items.data.forEach((item: object) => {
-          console.log((item as any)['url']);
-          ctx.reply((item as any)['url']);
-        });
-      })
-      .catch((error: any) => logger.error('Error:', error));
-  }
-
   // Handle the /start command.
-  bot.command('start', (ctx) => ctx.reply('היי לבוט החדשות שלך. לעזרה כתוב /news'));
+  bot.command('start', (ctx) => {
+    const message = ctx.message;
+    if (message?.chat.id == process.env.MY_BOT_ID) {
+      ctx.reply('Hi. please press the /news key to get help');
+    } else {
+      logger.error(` Unauthorized Entry attempt to Bot from ${message?.chat.id},${message?.from.first_name}. Bot? ${message?.from.is_bot} `);
+    }
+  });
   //Show all of the bot commends
   bot.command('news', async (ctx) => {
-    //  const message = ctx.message;
-
-    await ctx.reply('Select News Channel ', { reply_markup: menu });
-
-    //  console.log(message);
+    const message = ctx.message;
+    if (message?.chat.id == process.env.MY_BOT_ID) {
+      await ctx.reply(`Hi ${message?.from.first_name}. what do you want to read?`, { reply_markup: menu });
+    } else {
+      await ctx.reply(`Hi ${message?.from.first_name}. this is a privet bot. you need to live now`);
+      logger.error(`Unauthorized Entry attempt to Bot from ${message?.chat.id},${message?.from.first_name} `);
+      return;
+    }
   });
-  // Handle other messages.
-
-  // Now that you specified how to handle messages, you can start your bot.
-  // This will connect to the Telegram servers and wait for messages.
 
   // Start the bot.
   bot.start();

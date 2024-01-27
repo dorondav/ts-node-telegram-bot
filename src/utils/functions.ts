@@ -42,9 +42,9 @@ const createArticleArrayFromObject = (obj: WallaPageData | ScraperPageData, sour
   return articles;
 };
 
-function pushLinksToBot(ctx: Context, stories: Article[]) {
+function pushLinksToBot(ctx: Context, stories: Article[]): void {
   stories.forEach((story: Article) => {
-    ctx.reply((story as Article)['url']);
+    ctx.reply(story['url']);
   });
 }
-export { createArticleArrayFromObject,pushLinksToBot};
+export { createArticleArrayFromObject, pushLinksToBot };

@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "commonjs": true
+},
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+  // "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
+  "rules": {
+    "no-console": 0,
+
+    "no-var": "error",
+    "semi": "error",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "no-multi-spaces": "error",
+    "space-in-parens": "error",
+    "no-multiple-empty-lines": "error"
+    // "prefer-const": "error"
+  }
+}

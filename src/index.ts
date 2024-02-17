@@ -2,6 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { logger } from './lib/logger';
+import router from './routes/news';
 import newsBot from './bot/bot';
 
 dotenv.config();
@@ -20,7 +21,7 @@ app.get('/', async (req: Request, res: Response) => {
     }
   }
 });
-
+app.use('/news', router);
 app.listen(port, () => {
   logger.info(`[server]: Server is running at http://localhost:${port}`);
 });
